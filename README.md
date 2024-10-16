@@ -2,6 +2,6 @@
 Analysis of asymmetric key cryptography 
 
 MADE BY :
-## Ayam Sharma Dhakal
-## Summit Shrestha
-## Sandesh Parajuli
+# Ayam Sharma Dhakal
+# Summit Shrestha
+# Sandesh Parajuli

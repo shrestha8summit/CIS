@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSA</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap" rel="stylesheet">
+
+<style>
+    /* Your existing styles */
+</style>    
+</head>
+<body class="bg-slate-500 min-h-screen px-80 justify-between items-center">
+
+    <div class="nav my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">  
+
+        <center class=" font-extrabold italic text-3xl font-konit"> <h2>CIS PROJECT </h2></center>
+        <br>
+
+        <div class="directory flex justify-evenly w-5/6 mx-16 ">
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+            <a href="/">
+                <center>
+                    <img src="./icons/home.png" alt="home img" srcset="" class="w-10 h-10">
+                </center>
+                HOME
+            </a>
+            </button>
+
+            <button  class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+            <a href="dsa">
+                <center>
+                    <img src="./icons/cybersecurity (1).png" alt="2nd img" srcset="" class="w-10 h-10">
+                </center>
+                DSA
+            </a>
+            </button>
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+           <a href="/dh">
+            <center>
+                <img src="./icons/cybersecurity (2).png" alt="3rd img" srcset="" class="w-10 h-10">
+            </center>
+            DH
+           </a>
+            </button>
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+            <a href="/ecc">
+                <center>
+                    <img src="./icons/cybersecurity (3).png" alt="1st img" srcset="" class="w-10 h-10">
+                </center>
+    
+                ECC
+            </a>
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="container my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+
+        <div class="contain">
+
+        <center class=" italic text-xl font-konit font-semibold"> <h3>Rivest, Shamir, and Adelman</h3></center>
+        <p class="font-serif text-3xl text-red-500">
+        
+        <h3 class="text-xl  font-bold p-5 font-delius">Introduction</h3>
+        
+            <div class="intro text-lg font-sofadi">
+                Party A can send an encrypted message to party B without any prior exchange of secret keys. A just uses B's public key to encrypt the message and B decrypts it using the private key, which only he knows. RSA can also be used to sign a message, so A can sign a message using their private key and B can verify it using A's public key.            </div>
+            
+        <center class="py-3"> 
+            <img src="./icons/rsa.png" alt="asymmetric algorithm image " srcset="" class="w-4/5 h-4/5 rounded-lg">
+        </center>
+
+        </p>
+
+        
+        </div>
+
+    </div>
+
+    <div class="workSpace my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+
+        <center class="font-konit text-xl font-semibold italic"> <h2>Application of RSA algorithm in real life :</h2> </center>
+    
+        <form id="encryptionForm" action="/enRSA" method="post" enctype="multipart/form-data" class="font-delius text-lg mt-8 font-semibold italic">
+            <fieldset class="border-4 border-double p-5 rounded-lg">
+                <legend class="p-4">
+                    <label for="en">Encryption:</label>
+                </legend>
+        
+                <label for="fileIp">Upload File:</label>
+                <input type="file" name="fileIp" id="fileIp" required>
+                <br><br>
+        
+                <button type="submit" class="bg-teal-400 p-4 my-5 rounded-lg">Encrypt</button>
+            </fieldset>
+        </form>
+
+        <form action="/deRSA" method="post" enctype="multipart/form-data" class="font-delius text-lg mt-8 font-semibold italic">
+            <fieldset class="border-4 border-double p-5 rounded-lg">
+                <legend class="p-4">
+                    <label for="dec">Decryption</label>
+                </legend>
+        
+                <label for="fileIp">Upload Encrypted File:</label>
+                <input type="file" name="encryptedFile" id="encryptedFile" required>
+                <br><br>
+        
+                <label for="privateKey">Private Key:</label>
+                <input type="text" name="privateKey" id="privateKey" placeholder="Enter your private key" required>
+                <br><br>
+        
+                <button type="submit" class="bg-teal-400 p-4 my-5 rounded-lg">Decrypt</button>
+            </fieldset>
+        </form>
+
+    </div>
+
+    <script>
+        document.getElementById('encryptionForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                const privateKey = data.privateKey;
+    
+                
+                const textArea = document.createElement('textarea');
+                textArea.value = privateKey;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea); 
+    
+                alert('Private Key copied to clipboard!'); 
+                
+              
+                const downloadLink = document.createElement('a');
+                downloadLink.href = data.downloadLink; 
+                downloadLink.download = ''; 
+                document.body.appendChild(downloadLink);
+                downloadLink.click(); 
+                document.body.removeChild(downloadLink);
+    
+            } else {
+                const errorText = await response.text();
+                alert('Error: ' + errorText);
+            }
+        };
+    </script>
+    
+    
+</body>
+</html>

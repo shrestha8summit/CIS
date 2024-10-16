@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D.H</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap" rel="stylesheet">
+
+    <style>
+        input[type="file"]::file-selector-button {
+            border-radius: 4px;
+            padding: 0 16px;
+            height: 40px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+            margin-right: 16px;
+            transition: background-color 200ms;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #f3f4f6;
+        }
+        input[type="file"]::file-selector-button:active {
+            background-color: #e5e7eb;
+        }
+        /* Additional styles for the new workspace */
+        html {
+            font-size: 18px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        .containner {
+            border: 10px double rgb(108, 95, 11);
+            border-radius: 25px; 
+            margin-top: 2.5%;
+            padding: 2.5%; 
+            margin-left: 5%; 
+            margin-right: 5%;
+            background: linear-gradient(0.25turn,#e66465,#9198e5);
+        }
+        input {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80%;
+            padding: 4%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        form {
+            margin-top: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        fieldset {
+            border: 2px black double;
+            padding: 2%;
+            border-radius: 25px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding-left: 5%;
+        }
+    </style>
+</head>
+<body class="bg-slate-500 min-h-screen px-80 justify-between items-center">
+
+    <div class="nav my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <center class="font-extrabold italic text-3xl font-konit"><h2>CIS PROJECT</h2></center>
+        <br>
+        <div class="directory flex justify-evenly w-5/6 mx-16">
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200"><a href="/"><center><img src="./icons/home.png" alt="home img" class="w-10 h-10"></center>HOME</a></button>
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200"><a href="/rsa"><center><img src="./icons/cybersecurity.png" alt="1st img" class="w-10 h-10"></center>RSA</a></button>
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200"><a href="/dsa"><center><img src="./icons/cybersecurity (1).png" alt="2nd img" class="w-10 h-10"></center>DSA</a></button>
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200"><a href="/ecc"><center><img src="./icons/cybersecurity (3).png" alt="1st img" class="w-10 h-10"></center>ECC</a></button>
+        </div>
+    </div>
+
+    <div class="container my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <div class="contain">
+            <center class="italic text-xl font-konit font-semibold"><h3>Diffie-Hellman Key Exchange</h3></center>
+            <p class="font-serif text-3xl text-red-500">
+                <h3 class="text-xl font-bold p-5 font-delius">Introduction</h3>
+                <div class="intro text-lg font-sofadi">
+                    Diffie-Hellman key exchange is a method of digital encryption that securely exchanges cryptographic keys between two parties over a public channel without their conversation being transmitted over the internet. The two parties use symmetric cryptography to encrypt and decrypt their messages. 
+                    <center class="py-3"><img src="./icons/dh.webp" alt="asymmetric algorithm image" class="w-4/5 h-4/5 rounded-lg"></center>
+                </div>    
+            </p>
+        </div>
+    </div>
+
+    <div class="workSpace my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <form id="keyForm">
+            <fieldset>
+                <legend>Diffie-Hellman Key Exchange</legend>
+                <label for="alicePrivate">Alice's Private Key:</label> 
+                <input type="number" id="alicePrivate" name="alicePrivate" required><br><br>
+                <label for="bobPrivate">Bob's Private Key:</label>
+                <input type="number" id="bobPrivate" name="bobPrivate" required><br><br>
+                <button type="button" onclick="calculateKeys()">Calculate Keys</button>
+            </fieldset>
+        </form>
+
+        <div id="results">
+            <p id="aliceSecret"></p>
+            <p id="bobSecret"></p>
+        </div>
+    </div>
+
+    <script>
+        async function calculateKeys() {
+            const alicePrivate = parseInt(document.getElementById('alicePrivate').value);
+            const bobPrivate = parseInt(document.getElementById('bobPrivate').value);
+
+            const response = await fetch('/calculate-keys', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    alicePrivate: alicePrivate,
+                    bobPrivate: bobPrivate
+                }),
+            });
+
+            const data = await response.json();
+            document.getElementById('aliceSecret').textContent = `Secret key for Alice is: ${data.aliceSecret}`;
+            document.getElementById('bobSecret').textContent = `Secret key for Bob is: ${data.bobSecret}`;
+        }
+    </script>
+</body>
+</html>

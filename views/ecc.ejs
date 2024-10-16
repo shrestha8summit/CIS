@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECC</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="output.css">
+    <style>
+        input[type="file"]::file-selector-button {
+            border-radius: 4px;
+            padding: 0 16px;
+            height: 40px;
+            cursor: pointer;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+            margin-right: 16px;
+            transition: background-color 200ms;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: #f3f4f6;
+        }
+
+        input[type="file"]::file-selector-button:active {
+            background-color: #e5e7eb;
+        }
+        input
+        {
+            border-radius: 25px;
+            width: 55%;
+        }
+    </style>    
+</head>
+<body class="bg-slate-500 min-h-screen px-80 justify-between items-center">
+
+    <div class="nav my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <center class="font-extrabold italic text-3xl font-konit"> <h2>CIS PROJECT </h2></center>
+        <br>
+
+        <div class="directory flex justify-evenly w-5/6 mx-16 ">
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+                <a href="/">
+                    <center>
+                        <img src="./icons/home.png" alt="home img" class="w-10 h-10">
+                    </center>
+                    HOME
+                </a>
+            </button>
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+                <a href="/rsa">
+                    <center>
+                        <img src="./icons/cybersecurity.png" alt="RSA" class="w-10 h-10">
+                    </center>
+                    RSA
+                </a>    
+            </button>
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+                <a href="/dsa">
+                    <center>
+                        <img src="./icons/cybersecurity (1).png" alt="DSA" class="w-10 h-10">
+                    </center>
+                    DSA
+                </a>
+            </button>
+
+            <button class="rounded-lg bg-slate-500 p-5 hover:bg-slate-200">
+                <a href="/dh">
+                    <center>
+                        <img src="./icons/cybersecurity (2).png" alt="DH" class="w-10 h-10">
+                    </center>
+                    DH
+                </a>
+            </button>
+        </div>
+    </div>
+
+    <div class="container my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <div class="contain">
+            <center class="italic text-xl font-konit font-semibold"> <h3>Elliptic Curve Cryptography </h3></center>
+            <p class="font-serif text-3xl text-red-500">
+                <h3 class="text-xl font-bold p-5 font-delius">Introduction</h3>
+                <div class="intro text-lg font-sofadi">
+                    ECC, an alternative technique to RSA, is a powerful cryptography approach. It generates security between key pairs for public key encryption by using the mathematics of elliptic curves.
+                    Elliptic Curve Cryptography (ECC) is a public-key cryptography algorithm that uses elliptic curves to perform security functions like encryption, authentication, and digital signatures. ECC is considered more secure than older systems like RSA and Diffie-Hellman.
+                    <center class="py-3"> 
+                        <img src="./icons/ecc.png" alt="asymmetric algorithm image" class="w-4/5 h-4/5 rounded-lg">
+                    </center>
+                </div>
+            </p>
+        </div>
+    </div>
+
+    <div class="workSpace my-2 p-8 text-center backdrop-blur-lg bg-white bg-opacity-25 rounded-lg shadow hover:shadow-lg max-w-3xl overflow-hidden">
+        <div>
+            <h2>Generate Key Pairs</h2>
+            <button onclick="generateAndDisplayKeyPairs()" class="bg-teal-400 p-4 my-5 rounded-lg">Generate Key Pairs</button>
+        </div>
+        <div>
+            <h2>Input Keys and Compute Shared Key</h2>
+            <label for="privateKeyA">Private Key of A:</label>
+            <input type="text" id="privateKeyA"><br><br>
+            <label for="publicKeyB">Public Key of B:</label>
+            <input type="text" id="publicKeyB"><br><br>
+            <label for="privateKeyB">Private Key of B:</label>
+            <input type="text" id="privateKeyB"><br><br>
+            <label for="publicKeyA">Public Key of A:</label>
+            <input type="text" id="publicKeyA"><br><br>
+            <button onclick="computeAndDisplaySharedKeys()" class="bg-teal-400 p-4 my-5 rounded-lgs">Compute Shared Keys</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function generateKeyPair() {
+            try {
+                const response = await fetch('/generate-keypair', { method: 'POST' });
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                return response.json();
+            } catch (error) {
+                console.error('Error generating key pair:', error);
+                document.getElementById('result').innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+
+        async function computeSharedKey(privateKey, otherPublicKey) {
+            try {
+                const response = await fetch('/compute-shared-key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ privateKey, otherPublicKey })
+                });
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                return response.json();
+            } catch (error) {
+                console.error('Error computing shared key:', error);
+                document.getElementById('result').innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+
+        async function generateAndDisplayKeyPairs() {
+            const { publicKey, privateKey } = await generateKeyPair();
+            document.getElementById('privateKeyA').value = privateKey;
+            document.getElementById('publicKeyA').value = publicKey;
+            document.getElementById('privateKeyB').value = privateKey;
+            document.getElementById('publicKeyB').value = publicKey;
+        }
+
+        async function computeAndDisplaySharedKeys() {
+            const privateKeyA = document.getElementById('privateKeyA').value.trim();
+            const publicKeyA = document.getElementById('publicKeyA').value.trim();
+            const privateKeyB = document.getElementById('privateKeyB').value.trim();
+            const publicKeyB = document.getElementById('publicKeyB').value.trim();
+            
+            if (!privateKeyA || !publicKeyA || !privateKeyB || !publicKeyB) {
+                document.getElementById('result').innerHTML = `<p><strong>Error:</strong> Please fill in all input fields.</p>`;
+                return;
+            }
+
+            try {
+                const { sharedKey: A_SharedKey } = await computeSharedKey(privateKeyA, publicKeyB);
+                const { sharedKey: B_SharedKey } = await computeSharedKey(privateKeyB, publicKeyA);
+
+                document.getElementById('result').innerHTML = `
+                    <p><strong>X (Public Key of A):</strong> <span class="key">${publicKeyA}</span></p>
+                    <p><strong>Y (Public Key of B):</strong> <span class="key">${publicKeyB}</span></p>
+                    <p><strong>A Shared Key:</strong> <span class="key">${A_SharedKey}</span></p>
+                    <p><strong>B Shared Key:</strong> <span class="key">${B_SharedKey}</span></p>
+                    <p><strong>Equal Shared Keys:</strong> ${A_SharedKey === B_SharedKey}</p>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+            }
+        }
+    </script>
+
+</body>
+</html>
